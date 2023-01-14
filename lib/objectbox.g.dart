@@ -22,18 +22,24 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 2565643257256048285),
+      id: const IdUid(1, 4095929294636989717),
       name: 'Batch',
-      lastPropertyId: const IdUid(2, 7612829032123810429),
+      lastPropertyId: const IdUid(3, 1403978375788218261),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 8109444778282203089),
-            name: 'batchId',
+            id: const IdUid(1, 2088709646624026822),
+            name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 7612829032123810429),
+            id: const IdUid(2, 2996615125010867674),
+            name: 'batchId',
+            type: 9,
+            flags: 2080,
+            indexId: const IdUid(1, 141954165898563584)),
+        ModelProperty(
+            id: const IdUid(3, 1403978375788218261),
             name: 'batchName',
             type: 9,
             flags: 0)
@@ -43,18 +49,24 @@ final _entities = <ModelEntity>[
         ModelBacklink(name: 'student', srcEntity: 'Student', srcField: '')
       ]),
   ModelEntity(
-      id: const IdUid(2, 3755259995034720315),
+      id: const IdUid(2, 5032141013214021058),
       name: 'Course',
-      lastPropertyId: const IdUid(2, 6863266498588394358),
+      lastPropertyId: const IdUid(3, 7134796672467382475),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 4877466597412635500),
-            name: 'courseId',
+            id: const IdUid(1, 2516332635075564304),
+            name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 6863266498588394358),
+            id: const IdUid(2, 7330839453943720044),
+            name: 'courseId',
+            type: 9,
+            flags: 2080,
+            indexId: const IdUid(2, 7958825211041706208)),
+        ModelProperty(
+            id: const IdUid(3, 7134796672467382475),
             name: 'courseName',
             type: 9,
             flags: 0)
@@ -64,49 +76,49 @@ final _entities = <ModelEntity>[
         ModelBacklink(name: 'student', srcEntity: 'Student', srcField: '')
       ]),
   ModelEntity(
-      id: const IdUid(3, 1133708803724402385),
+      id: const IdUid(3, 4365799552058694123),
       name: 'Student',
-      lastPropertyId: const IdUid(6, 3403387864010101592),
+      lastPropertyId: const IdUid(6, 7683895436383244782),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 7601323847252448130),
+            id: const IdUid(1, 5457165635205891968),
             name: 'stdId',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 3676778349821370419),
+            id: const IdUid(2, 3234513695511248034),
             name: 'fname',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 3011220876111792482),
+            id: const IdUid(3, 894209950617093699),
             name: 'lname',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 4013360950595519554),
+            id: const IdUid(4, 4176235720621895659),
             name: 'username',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 2742963194213725660),
+            id: const IdUid(5, 4616005328425030645),
             name: 'password',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 3403387864010101592),
+            id: const IdUid(6, 7683895436383244782),
             name: 'batchId',
             type: 11,
             flags: 520,
-            indexId: const IdUid(1, 793920947651506709),
+            indexId: const IdUid(3, 1356693388841129012),
             relationTarget: 'Batch')
       ],
       relations: <ModelRelation>[
         ModelRelation(
-            id: const IdUid(1, 3909601909676186380),
+            id: const IdUid(1, 3862797510608843814),
             name: 'course',
-            targetId: const IdUid(2, 3755259995034720315))
+            targetId: const IdUid(2, 5032141013214021058))
       ],
       backlinks: <ModelBacklink>[])
 ];
@@ -131,9 +143,9 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(3, 1133708803724402385),
-      lastIndexId: const IdUid(1, 793920947651506709),
-      lastRelationId: const IdUid(1, 3909601909676186380),
+      lastEntityId: const IdUid(3, 4365799552058694123),
+      lastIndexId: const IdUid(3, 1356693388841129012),
+      lastRelationId: const IdUid(1, 3862797510608843814),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
@@ -148,20 +160,26 @@ ModelDefinition getObjectBoxModel() {
         model: _entities[0],
         toOneRelations: (Batch object) => [],
         toManyRelations: (Batch object) => {
-              RelInfo<Student>.toOneBacklink(6, object.batchId,
-                  (Student srcObject) => srcObject.batch): object.student
+              RelInfo<Student>.toOneBacklink(
+                      6, object.id, (Student srcObject) => srcObject.batch):
+                  object.student
             },
-        getId: (Batch object) => object.batchId,
+        getId: (Batch object) => object.id,
         setId: (Batch object, int id) {
-          object.batchId = id;
+          object.id = id;
         },
         objectToFB: (Batch object, fb.Builder fbb) {
-          final batchNameOffset = fbb.writeString(object.batchName);
-          fbb.startTable(3);
-          fbb.addInt64(0, object.batchId);
-          fbb.addOffset(1, batchNameOffset);
+          final batchIdOffset =
+              object.batchId == null ? null : fbb.writeString(object.batchId!);
+          final batchNameOffset = object.batchName == null
+              ? null
+              : fbb.writeString(object.batchName!);
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, batchIdOffset);
+          fbb.addOffset(2, batchNameOffset);
           fbb.finish(fbb.endTable());
-          return object.batchId;
+          return object.id;
         },
         objectFromFB: (Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
@@ -169,35 +187,40 @@ ModelDefinition getObjectBoxModel() {
 
           final object = Batch(
               const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              batchId:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
+                  .vTableGetNullable(buffer, rootOffset, 6),
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8),
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
           InternalToManyAccess.setRelInfo(
               object.student,
               store,
               RelInfo<Student>.toOneBacklink(
-                  6, object.batchId, (Student srcObject) => srcObject.batch),
+                  6, object.id, (Student srcObject) => srcObject.batch),
               store.box<Batch>());
           return object;
         }),
     Course: EntityDefinition<Course>(
         model: _entities[1],
         toOneRelations: (Course object) => [],
-        toManyRelations: (Course object) => {
-              RelInfo<Student>.toManyBacklink(1, object.courseId):
-                  object.student
-            },
-        getId: (Course object) => object.courseId,
+        toManyRelations: (Course object) =>
+            {RelInfo<Student>.toManyBacklink(1, object.id): object.student},
+        getId: (Course object) => object.id,
         setId: (Course object, int id) {
-          object.courseId = id;
+          object.id = id;
         },
         objectToFB: (Course object, fb.Builder fbb) {
-          final courseNameOffset = fbb.writeString(object.courseName);
-          fbb.startTable(3);
-          fbb.addInt64(0, object.courseId);
-          fbb.addOffset(1, courseNameOffset);
+          final courseIdOffset = object.courseId == null
+              ? null
+              : fbb.writeString(object.courseId!);
+          final courseNameOffset = object.courseName == null
+              ? null
+              : fbb.writeString(object.courseName!);
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, courseIdOffset);
+          fbb.addOffset(2, courseNameOffset);
           fbb.finish(fbb.endTable());
-          return object.courseId;
+          return object.id;
         },
         objectFromFB: (Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
@@ -205,13 +228,14 @@ ModelDefinition getObjectBoxModel() {
 
           final object = Course(
               const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              courseId:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
+                  .vTableGetNullable(buffer, rootOffset, 6),
+              const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8),
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
           InternalToManyAccess.setRelInfo(
               object.student,
               store,
-              RelInfo<Student>.toManyBacklink(1, object.courseId),
+              RelInfo<Student>.toManyBacklink(1, object.id),
               store.box<Course>());
           return object;
         }),
@@ -274,24 +298,29 @@ ModelDefinition getObjectBoxModel() {
 
 /// [Batch] entity fields to define ObjectBox queries.
 class Batch_ {
+  /// see [Batch.id]
+  static final id = QueryIntegerProperty<Batch>(_entities[0].properties[0]);
+
   /// see [Batch.batchId]
-  static final batchId =
-      QueryIntegerProperty<Batch>(_entities[0].properties[0]);
+  static final batchId = QueryStringProperty<Batch>(_entities[0].properties[1]);
 
   /// see [Batch.batchName]
   static final batchName =
-      QueryStringProperty<Batch>(_entities[0].properties[1]);
+      QueryStringProperty<Batch>(_entities[0].properties[2]);
 }
 
 /// [Course] entity fields to define ObjectBox queries.
 class Course_ {
+  /// see [Course.id]
+  static final id = QueryIntegerProperty<Course>(_entities[1].properties[0]);
+
   /// see [Course.courseId]
   static final courseId =
-      QueryIntegerProperty<Course>(_entities[1].properties[0]);
+      QueryStringProperty<Course>(_entities[1].properties[1]);
 
   /// see [Course.courseName]
   static final courseName =
-      QueryStringProperty<Course>(_entities[1].properties[1]);
+      QueryStringProperty<Course>(_entities[1].properties[2]);
 }
 
 /// [Student] entity fields to define ObjectBox queries.

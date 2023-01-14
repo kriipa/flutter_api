@@ -1,4 +1,5 @@
 import '../data_source/local_data_source/batch_data_source.dart';
+import '../data_source/remote_data_source/batch_data_source.dart';
 import '../model/batch.dart';
 import '../model/student.dart';
 
@@ -16,7 +17,7 @@ class BatchRepositoryImpl extends BatchRepository {
 
   @override
   Future<List<Batch?>> getAllBatch() async {
-    return BatchDataSource().getAllBatch();
+    return BatchRemoteDataSource().getAllBatch();
   }
 
   @override
